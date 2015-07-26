@@ -1,13 +1,16 @@
 shinyUI(fluidPage(
-  titlePanel("Illinois Weather"), 
+  titlePanel("Storms"), 
   sidebarLayout( 
     sidebarPanel(
-      textInput("weather", "Weather", 
-                value = "pracipitation") 
+      selectInput(
+        "year",
+        label = "Year",
+        choices = list(2010, 2011, 2012, 2013, 2014),
+        multiple = TRUE
+      )
     ),
-    mainPanel( 
-      h3(textOutput("text")), 
-      plotOutput("plot") 
+    mainPanel(  
+      globeOutput("globe") 
     ) 
   ) 
 ))
