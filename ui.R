@@ -10,7 +10,7 @@ shinyUI(fluidPage(
       )
     ),
     mainPanel(  
-      globeOutput("globe") 
+      threejs::globeOutput("globe") 
     ) 
   ) 
 ))

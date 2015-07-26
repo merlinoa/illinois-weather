@@ -1,6 +1,4 @@
-library(dplyr)
-library(shiny)
-library(threejs)
+
 
 earth_dark   <- system.file("images/world.jpg",package="threejs")
 # load the data
@@ -50,7 +48,7 @@ shinyServer(function(input, output) {
   
   
   output$globe <- renderGlobe({
-    globejs(lat = storm_data$coords.x2,
+    threejs::globejs(lat = storm_data$coords.x2,
             long = storm_data$coords.x1,
             color = storm_data$colors,
             img = earth_dark,
