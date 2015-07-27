@@ -42,18 +42,17 @@ load(file = "data/storm_data.rda")
 shinyServer(function(input, output) {
   
   # subset storms by year
-  storms_data <- reactive({
+  storms <- reactive({
     storm_data[storm_data$Season == input$year, ]
   })
   
-  
   output$globe <- renderGlobe({
-    threejs::globejs(lat = storm_data$coords.x2,
-            long = storm_data$coords.x1,
-            color = storm_data$colors,
-            img = earth_dark,
-            value = storm_data$wmo_wind / 40
-            )
+    threejs::globejs(
+      lat = storms()$coords.x2,
+      long = storms()$coords.x1,
+      color = storms()$colors,
+      img = earth_dark,
+      value = storms()$wmo_wind / 40
+    )
   })
-  
 })
