@@ -1,10 +1,10 @@
 
 
 earth_dark   <- system.file("images/world.jpg",package="threejs")
-# load the data
 load(file = "data/storm_data.rda")
-# data was downloaded using the rnoaa package and the 
-# following commentted out code
+## data was downloaded using the rnoaa package and the 
+## following commentted out code
+#library(rnoaa)
 #res2010 <- storm_shp(year = 2010)
 #res2011 <- storm_shp(year = 2011)
 #res2012 <- storm_shp(year = 2012)
@@ -37,22 +37,26 @@ load(file = "data/storm_data.rda")
 #storms$colors <- as.character(storms$colors)
 #names(storms) <- c("Serial_Num", "colors")
 #storm_data <- left_join(storm_data, storms, by = "Serial_Num")
-
+#save(storm_data, file = "data/storm_data.rda")
 
 shinyServer(function(input, output) {
   
   # subset storms by year
   storms <- reactive({
-    storm_data[storm_data$Season == input$year, ]
+    storm_data[storm_data$Season %in% input$year, ]
+  })
+  
+  storms_type <- reactive({
+    storms()[storms()$Nature %in% input$type, ]
   })
   
   output$globe <- renderGlobe({
     threejs::globejs(
-      lat = storms()$coords.x2,
-      long = storms()$coords.x1,
-      color = storms()$colors,
+      lat = storms_type()$coords.x2,
+      long = storms_type()$coords.x1,
+      color = storms_type()$colors,
       img = earth_dark,
-      value = storms()$wmo_wind / 40
+      value = storms_type()$wmo_wind / 40
     )
   })
 })
